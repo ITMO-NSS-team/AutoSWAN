@@ -118,7 +118,7 @@ class Case:
                 # TODO remove hardcode
                 bdc_template_path = f'{self._data_options.storage_path}' + '/ww3/{year}/ww3.{date}.nc'
             elif self._data_options.bdc_dataset_type == 'era5':
-                bdc_template_path = f'{self._data_options.storage_path}' + '/waves_ura_{date}.nc'
+                bdc_template_path = f'{self._data_options.storage_path}' + '/waves_'+self.case_id+'_{date}.nc'
 
             bdc_description = create_bdc(self.case_id, self._grid, self.task,
                                          bathy_path=f'./data/bathy_{self.case_id}.nc',

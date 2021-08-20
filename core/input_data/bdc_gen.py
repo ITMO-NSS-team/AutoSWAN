@@ -148,10 +148,10 @@ def _bdc_for_side(side_id: str, bdc_source, bathy_source):
             if side_id == 'N':
                 if is_2d_grid:
                     bnd_pt_lon = ((360 + domain_lon[domain_lon.shape[0] - 1][i]) % 360)
-                    bnd_pt_lat = domain_lat[domain_lon.shape[0] - 1][i]
+                    bnd_pt_lat = domain_lat[domain_lat.shape[0] - 1][i]
                 else:
                     bnd_pt_lon = ((360 + domain_lon[i]) % 360)
-                    bnd_pt_lat = domain_lat[domain_lon.shape[0] - 1]
+                    bnd_pt_lat = domain_lat[domain_lat.shape[0] - 1]
             elif side_id == 'S':
                 if is_2d_grid:
                     bnd_pt_lon = ((360 + domain_lon[0][i]) % 360)
@@ -164,7 +164,7 @@ def _bdc_for_side(side_id: str, bdc_source, bathy_source):
                     bnd_pt_lon = ((360 + domain_lon[i][domain_lon.shape[1] - 1]) % 360)
                     bnd_pt_lat = domain_lat[i][domain_lon.shape[1] - 1]
                 else:
-                    bnd_pt_lon = ((360 + domain_lon[domain_lon.shape[1] - 1]) % 360)
+                    bnd_pt_lon = ((360 + domain_lon[domain_lon[0] - 1]) % 360)
                     bnd_pt_lat = domain_lat[i]
             elif side_id == 'W':
                 if is_2d_grid:

@@ -32,7 +32,7 @@ The output is automatically converting to NetCDF4 format.
     "grid": {
       "step": 500,
       "step_unit": "m",
-      "grid_type": "deg"
+      "grid_type": "spherical"
     },
     "open_boundaries": "['N','S','W','E']"
   },
@@ -49,7 +49,7 @@ The output is automatically converting to NetCDF4 format.
     "storage_path": "./storage",
     "force_overwrite": "False",
     "bathy_source": "./data/gebco_small.nc",
-    "bdc_ncep_dataset_type": "ak_10m",
+    "bdc_dataset_type": "ak_10m",
     "wind_dataset_type": "cfs2"
   },
   "output": {

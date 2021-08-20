@@ -72,8 +72,9 @@ def upload_wind_data(data_options: DataOptions,
                 if os.path.exists(f'{data_options.storage_path}/merged_{new_name_short}.grib2'):
                     os.remove(f'{data_options.storage_path}/merged_{new_name_short}.grib2')
 
+                final_name = f'wind_{grid.grid_id}_{year}-{mon:02d}-01'
                 subset_vars(f'{data_options.storage_path}/all_{new_nc_file}',
-                            f'{data_options.storage_path}/{new_name_short}.nc',
+                            f'{data_options.storage_path}/{final_name}.nc',
                             'u10=10u;v10=10v')
 
                 if os.path.exists(f'{data_options.storage_path}/all_{new_nc_file}'):

@@ -73,9 +73,7 @@ class DataOptions(OutputOptions):
 
     @property
     def bdc_dataset_type(self):
-        bdc_data_type = self.data_config['bdc_ncep_dataset_type']
-        if bdc_data_type not in self._ncep_ncar_wave_datasets:
-            warnings.warn(f'Custom BDC dataset type used: {bdc_data_type}')
+        bdc_data_type = self.data_config['bdc_dataset_type']
         return bdc_data_type
 
     @property
