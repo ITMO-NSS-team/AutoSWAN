@@ -10,9 +10,12 @@ from core.utils.netcdf import extract_nearest_ts
 
 
 class WaveComparer:
-    def __init__(self, case: Case, obs_folder: str = 'obs'):
-        self.output_files = ['P1']
-        self.rean = 'D:\storage\multi_1.ak_10m.hs.201701.nc'
+    def __init__(self, case: Case,
+                 obs_folder: str = 'obs',
+                 rean_folder: str = 'rean',
+                 output_files = None):
+        self.output_files = output_files
+        self.rean = rean_folder
         self.case = case
         self.obs_folder = obs_folder
 
