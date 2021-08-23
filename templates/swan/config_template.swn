@@ -1,0 +1,34 @@
+$***********MODEL INPUT*********************************
+$
+SET NAUTical
+MODE NONSTationary TWODimensional
+COORDinates {coordinates_type}
+
+{grid_desc}
+
+INPgrid BOTtom {input_grid} EXCeption -9
+READinp BOTtom fac=1 'data\bathy.bot' idla=1 0 FREE
+
+INPgrid WIND  {input_grid}  &
+NONSTATIONARY {wind_start} {wind_step} {wind_end}
+READinp WIND fac={wind_drag} SERIES 'data\wind_inventory.txt' 1 0 1 0 FREE
+
+BOUnd SHAPespec JONswap 3.3 PEAK DSPR DEGRees
+
+{bdc}
+
+{model_params}
+
+
+OUTPUT OPTIONS '%' TABLE 16 BLOCK 6 {output_width}
+
+{fields_output}
+
+{points_output}
+
+{spectral_output}
+
+
+COMPUTE NONSTat {wind_start} {int_step} {end_datetime}
+
+STOP

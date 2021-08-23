@@ -1,0 +1,181 @@
+$******************************* HEADING ******************************************
+$
+PROJ 'La-Manch' '2018'
+$
+$
+SET 0.0 90. 0.05 200 1 9.81 1025 NAUTical
+$
+MODE NONSTationary TWODimensional
+$
+COORDINATES SPHERICAL
+$
+$==========================================================================================
+$
+CGRID REG -8.979 43.073 0.0 13.5251 8.9099 965 989 CIRCLE 36 0.03 1. 39
+$
+$
+INPGRID BOTtom REG -8.979 43.073 0.0 965 989 0.0140156477 0.009008999
+READINP BOTTOM 1. 'lamanche_bathy.bot' 1 0 FREE
+
+INIT PAR 1.0 9.1 200 30
+
+$
+$
+INPGRID WIND REG -8.979 43.073 0.0 965 989 0.0140156477 0.009008999           &
+NONSTAT 20171220.00 1 HR 20180110.23
+READINP WIND 1.0 'in\lamanche_wind_interp_20171220_20180110.txt' 1 1 0 0 FREE
+$
+$
+BOUndspec SEGMent IJ  99  989 125 989 VARiable FILE 1 'newbdy3\bdy_N_99_125.tpar'
+BOUndspec SEGMent IJ  124 989 161 989 VARiable FILE 1 'newbdy3\bdy_N_125_161.tpar'
+BOUndspec SEGMent IJ  162 989 195 989 VARiable FILE 1 'newbdy3\bdy_N_161_196.tpar'
+BOUndspec SEGMent IJ  196 989 231 989 VARiable FILE 1 'newbdy3\bdy_N_196_232.tpar'
+BOUndspec SEGMent IJ  232 989 730 989 VARiable FILE 1 'newbdy3\bdy_N_232_268.tpar'
+BOUndspec SEGMent IJ  731 989 739 989 VARiable FILE 1 'newbdy3\bdy_N_731_732.tpar'
+BOUndspec SEGMent IJ  740 989 766 989 VARiable FILE 1 'newbdy3\bdy_N_740_767.tpar'
+BOUndspec SEGMent IJ  767 989 802 989 VARiable FILE 1 'newbdy3\bdy_N_767_803.tpar'
+BOUndspec SEGMent IJ  803 989 837 989 VARiable FILE 1 'newbdy3\bdy_N_803_838.tpar'
+BOUndspec SEGMent IJ  838 989 873 989 VARiable FILE 1 'newbdy3\bdy_N_838_874.tpar'
+BOUndspec SEGMent IJ  874 989 910 989 VARiable FILE 1 'newbdy3\bdy_N_874_910.tpar'
+
+$
+BOUndspec SEGMent IJ 0 941 0 906 VARiable FILE 1 'newbdy3\bdy_W_941_907.tpar'
+BOUndspec SEGMent IJ 0 907 0 851 VARiable FILE 1 'newbdy3\bdy_W_907_852.tpar'
+BOUndspec SEGMent IJ 0 852 0 795 VARiable FILE 1 'newbdy3\bdy_W_852_796.tpar'
+BOUndspec SEGMent IJ 0 796 0 740 VARiable FILE 1 'newbdy3\bdy_W_796_741.tpar'
+BOUndspec SEGMent IJ 0 741 0 684 VARiable FILE 1 'newbdy3\bdy_W_741_685.tpar'
+BOUndspec SEGMent IJ 0 685 0 629 VARiable FILE 1 'newbdy3\bdy_W_685_630.tpar'
+BOUndspec SEGMent IJ 0 630 0 573 VARiable FILE 1 'newbdy3\bdy_W_630_574.tpar'
+BOUndspec SEGMent IJ 0 574 0 518 VARiable FILE 1 'newbdy3\bdy_W_574_519.tpar'
+BOUndspec SEGMent IJ 0 519 0 462 VARiable FILE 1 'newbdy3\bdy_W_519_463.tpar'
+BOUndspec SEGMent IJ 0 463 0 407 VARiable FILE 1 'newbdy3\bdy_W_463_408.tpar'
+BOUndspec SEGMent IJ 0 408 0 351 VARiable FILE 1 'newbdy3\bdy_W_408_352.tpar'
+BOUndspec SEGMent IJ 0 352 0 296 VARiable FILE 1 'newbdy3\bdy_W_352_297.tpar'
+BOUndspec SEGMent IJ 0 297 0 242 VARiable FILE 1 'newbdy3\bdy_W_297_241.tpar'
+BOUndspec SEGMent IJ 0 241 0 185 VARiable FILE 1 'newbdy3\bdy_W_241_186.tpar'
+BOUndspec SEGMent IJ 0 186 0 129 VARiable FILE 1 'newbdy3\bdy_W_186_130.tpar'
+BOUndspec SEGMent IJ 0 130 0 24 VARiable FILE 1 'newbdy3\bdy_W_130_75.tpar'
+$
+
+$
+GEN3
+$
+$OFF WCAP
+$
+QUADRUPL
+$
+BREAKING
+$
+FRICTION  JONswap CONstant 0.027
+$
+TRIAD
+$
+DIFFRACtion
+$
+QUANTity Per short='Tm-1,0' power=1.
+$QUANTity WLEN long='WLENght' power=1.
+$
+$
+PROP BSBT
+$
+$NUM ACCUR 0.02 0.02 0.02 98.0 NONSTAT 70
+$
+
+POINTS 'P-1' -2.4337 49.8207
+
+POINTS 'C-1' -3.89,49.616667
+
+POINTS 'T-1' -3.89,49.616667
+
+
+$
+$
+$
+OUTPut OPTIons '5' TABLE 12 BLOCK 7 25 SPEC 7
+
+
+BLOCK 'COMPGRID' HEADer 'res\DEPTH.txt' LAYOUT 1  &
+      DEPTH                  &
+    OUTput 20171228.000000 400 Day
+
+BLOCK 'COMPGRID' HEADer 'res\2018_HSig.txt' LAYOUT 1  &
+      HSigN                  &
+     OUTput 20171228.000000 1 HR
+$
+BLOCK 'COMPGRID' HEADer 'res\2018_DIR.txt' LAYOUT 1  &
+      DIR                  &
+     OUTput 20171228.000000 1 HR
+$
+BLOCK 'COMPGRID' HEADer 'res\2018_TMO1.txt' LAYOUT 1  &
+      TM01                 &
+     OUTput 20171228.000000 1 HR
+$
+BLOCK 'COMPGRID' HEADer 'res\2018_TM02.txt' LAYOUT 1  &
+      TM02                &
+    OUTput 20171228.000000 1 HR
+
+BLOCK 'COMPGRID' HEADer 'res\2018_TMM10.txt' LAYOUT 1  &
+      TMM10                &
+    OUTput 20171228.000000 1 HR
+
+
+BLOCK 'COMPGRID' HEADer 'res\2018_PER.txt' LAYOUT 1  &
+      PER                  &
+     OUTput 20171228.000000 1 HR
+$
+BLOCK 'COMPGRID' HEADer 'res\2018_RTP.txt' LAYOUT 1  &
+      RTP                  &
+     OUTput 20171228.000000 1 HR
+$
+BLOCK 'COMPGRID' HEADer 'res\2018_WLEN.txt' LAYOUT 1  &
+      WLEN                  &
+     OUTput 20171228.000000 1 HR
+$
+BLOCK 'COMPGRID' HEADer 'res\2018_WIND.txt' LAYOUT 1  &
+      WIND                  &
+    OUTput 20171228.000000 1 HR
+$
+$
+$
+TABLE 'P-1' HEAD 'res\2018_P-1.tab'    &
+         TIME DEPth HSign DIR WLEN PDIR TDIR TM01 RTP TM02 TMM10 PER WIND        &
+      OUTPUT 20171228.000000 1 HR
+$$
+
+ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+
+ TABLE 'C-1' HEAD 'res\2018_C-1.tab'    &
+TIME DEPth HSign DIR WLEN PDIR TDIR TM01 RTP TM02 TMM10 PER WIND        &
+    OUTPUT 20171228.000000 1 HR
+
+TABLE 'T-1' HEAD 'res\pt_T-1.tab'    &
+TIME DEPth HSign DIR WLEN PDIR TDIR TM01 RTP TM02 TMM10 PER WIND        &
+OUTPUT 20171228.000000 1 HR
+
+
+$$$$$$$$$$$$$
+
+
+$
+$
+$
+SPECout 'P-1' SPEC2D ABS 'res\2018_P-1.spc'         &
+     OUTput 20171228.000000 1 HR
+
+SPECout 'C-1' SPEC2D ABS 'res\2018_C-1.spc'         &
+     OUTput 20171228.000000 1 HR
+
+SPECout 'T-1' SPEC2D ABS 'res\pt_T-1.spc'         &
+OUTput 20171228.000000 1 HR
+
+
+$
+$
+$
+
+$COMPUTE NONSTAT 20171228.000000 10 MIN 20180105.000000
+COMPUTE NONSTAT 20171226.000000 10 MIN 20180105.000000
+$HOTFILE 'RESTART-20171231'
+$
+STOP
