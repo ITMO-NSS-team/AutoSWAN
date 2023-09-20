@@ -68,8 +68,12 @@ def _wind_to_txt(final_file_name_template: str, task: SimulationTask, grid: Grid
             ncin = nc.Dataset(interpolated_wind, 'r', format='NETCDF4')
 
             try:
-                u10 = np.asarray(ncin.variables['u10'])
-                v10 = np.asarray(ncin.variables['v10'])
+                if len(np.asarray(ncin.variables['u10']).shape) > 3:
+                    u10 = np.asarray(ncin.variables['u10'])[:, 0, :, :]
+                    v10 = np.asarray(ncin.variables['v10'])[:, 0, :, :]
+                else:
+                    u10 = np.asarray(ncin.variables['u10'])
+                    v10 = np.asarray(ncin.variables['v10'])
             except KeyError:
                 u10 = np.asarray(ncin.variables['10u'])[:, 0, :, :]
                 v10 = np.asarray(ncin.variables['10v'])[:, 0, :, :]

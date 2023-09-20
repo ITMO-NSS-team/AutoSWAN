@@ -25,7 +25,7 @@ def bathy_to_txt(nc_file_name: str, new_name: str, process_as_is=False):
 
     bathy = np.asarray(ncin.variables['elevation'])
 
-    # TODO take lon/lat direction in nc into accound
+    # TODO take lon/lat direction in nc into account
     bathy = np.flipud(bathy)
 
     if not process_as_is:

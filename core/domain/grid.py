@@ -179,30 +179,32 @@ def grid_from_csv(grid_id: str, grid_csv_path: str, grid_type='spherical'):
     x_lim = max(data['xIndex'])
     y_lim = max(data['yIndex'])
 
-    step_x = abs(lons[19] - lons[20])  # TODO refactor!!!
-    step_y = abs(lats[0] - lats[1])
 
     step_type = 'deg'
 
-    lons_mat = np.zeros((x_lim, y_lim))
-    lats_mat = np.zeros((x_lim, y_lim))
-    depth = np.zeros((x_lim, y_lim))
+    lons_mat = np.zeros((y_lim, x_lim))
+    lats_mat = np.zeros((y_lim, x_lim))
+    depth = np.zeros((y_lim, x_lim))
 
-    for i in range(x_lim):
-        for j in range(y_lim):
-            lons_mat[i, j] = float(data[(data['xIndex'] == i) & (data['yIndex'] == j)]['lat'])
-            lats_mat[i, j] = float(data[(data['xIndex'] == i) & (data['yIndex'] == j)]['lon'])
-            depth[i, j] = float(data[(data['xIndex'] == i) & (data['yIndex'] == j)]['elevation'])
-            if depth[i, j] > 0:
-                depth[i, j] = 0
-            else:
-                depth[i, j] = abs(depth[i,j])
+    for i in range(y_lim):
+        for j in range(x_lim):
+            lons_mat[i, j] = float(data[(data['yIndex'] == i) & (data['xIndex'] == j)]['lat'])
+            lats_mat[i, j] = float(data[(data['yIndex'] == i) & (data['xIndex'] == j)]['lon'])
+            depth[i, j] = float(data[(data['yIndex'] == i) & (data['xIndex'] == j)]['elevation'])
+            # if depth[i, j] > 0:
+            #     depth[i, j] = 0
+            # else:
+            #     depth[i, j] = abs(depth[i,j])
+
+    step_x = abs(lons_mat[0,0] - lons_mat[0,1])  # TODO refactor!!!
+    step_y = abs(lats_mat[0,0] - lats_mat[1,0])
 
     instance_path = f'./data/bathy_{grid_id}.nc'
     variable_to_netcdf(grid_lons=lons_mat, grid_lats=lats_mat,
                        var_name='elevation', var=depth, target_path=instance_path)
 
-    grid = Grid(grid_id, min_x=np.min(lons), min_y=np.min(lats), max_x=np.max(lons), max_y=np.max(lats),
+    grid = Grid(grid_id, min_x=np.min(lons), min_y=np.min(lats),
+                max_x=np.max(lons), max_y=np.max(lats),
                 step=step_x, step_y=step_y, step_type=step_type,
                 instance_path=instance_path, grid_type=grid_type)
     return grid

@@ -62,7 +62,7 @@ class SwanConfig:
 
     @staticmethod
     def generate(task: SimulationTask, grid: Grid, output_options: OutputOptions):
-        wind_step = '1 HR'  # TODO automate
+        wind_step = '6 HR'  # TODO automate!!!
         wind_drag = 1.21
         int_step = task.integration_step  # TODO automate
 
@@ -154,7 +154,7 @@ class SwanConfig:
         if grid_type == 'spherical':
             return (f"""REGular xpinp={self.grid.min_x}  ypinp={self.grid.min_y} & 
                 alpinp=0. mxinp={self.grid.x_cells - 1} myinp={self.grid.y_cells - 1} &
-                dxinp={round(self.grid.x_step_deg, 6)} dyinp={round(self.grid.y_step_deg, 6)}""")
+                dxinp={round(self.grid.x_step_deg, 10):.10f} dyinp={round(self.grid.y_step_deg, 10):.10f}""")
         elif grid_type == 'CART':
             return (
                 f"""0. 0. 0. {self.grid.x_cells - 1} {self.grid.y_cells - 1} {self.grid.step} {self.grid.step}""")
