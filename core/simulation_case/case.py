@@ -3,7 +3,7 @@ import os
 from ast import literal_eval
 from datetime import datetime
 
-from core.domain.grid import grid_from_coords, grid_from_txt
+from core.domain.grid import grid_from_coords, grid_from_csv, grid_from_txt
 from core.domain.task import SimulationTask
 from core.input_data.bathy_gen import create_bathy
 from core.input_data.bdc_gen import create_bdc
@@ -32,10 +32,15 @@ class Case:
             grid = case_description['grid']
             try:
                 coords = literal_eval(case_description['coords'])
-                self._grid = grid_from_coords(grid_id=self.case_id, coords=coords,
-                                              step=int(grid['step']),
-                                              step_type=grid['step_unit'],
-                                              grid_type=grid['grid_type'])
+                if coords is None:
+                    self._grid = grid_from_csv(grid_id=self.case_id,
+                                               grid_csv_path=case_data['data']['bathy_source'],
+                                               grid_type=grid['grid_type'])
+                else:
+                    self._grid = grid_from_coords(grid_id=self.case_id, coords=coords,
+                                                  step=int(grid['step']),
+                                                  step_type=grid['step_unit'],
+                                                  grid_type=grid['grid_type'])
             except SyntaxError:
                 if grid['step_unit'] == 'deg':
                     raise ValueError('Not supported for the grid')
@@ -73,7 +78,10 @@ class Case:
         self._grid.save_as_cdo_grid('./data/grid')
 
         # bathymetry generation
-        create_bathy(self.case_id, self._grid, self._data_options.raw_bathy_path, './data/bathy.bot')
+        bathy_source_path = self._data_options.raw_bathy_path
+        if self._data_options.raw_bathy_path.endswith('.csv'):
+            bathy_source_path = f'./data/bathy_{self.case_id}.nc'
+        create_bathy(self.case_id, self._grid, bathy_source_path, './data/bathy.bot')
 
         # input wind upload
         if self._data_options.is_upload_data:
@@ -118,7 +126,7 @@ class Case:
                 # TODO remove hardcode
                 bdc_template_path = f'{self._data_options.storage_path}' + '/ww3/{year}/ww3.{date}.nc'
             elif self._data_options.bdc_dataset_type == 'era5':
-                bdc_template_path = f'{self._data_options.storage_path}' + '/waves_'+self.case_id+'_{date}.nc'
+                bdc_template_path = f'{self._data_options.storage_path}' + '/waves_' + self.case_id + '_{date}.nc'
 
             bdc_description = create_bdc(self.case_id, self._grid, self.task,
                                          bathy_path=f'./data/bathy_{self.case_id}.nc',

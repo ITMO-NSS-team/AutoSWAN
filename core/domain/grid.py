@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
 import numpy as np
+import pandas as pd
 
 from core.utils.geo import distance
 from core.utils.netcdf import get_dims, variable_to_netcdf
@@ -147,6 +148,59 @@ def grid_from_txt(grid_id: str, grid_txt_path: str, grid_type='spherical', fixed
 
     instance_path = f'{grid_txt_path}.nc'
     variable_to_netcdf(lons, lats, 'mask', None, instance_path)
+
+    grid = Grid(grid_id, min_x=np.min(lons), min_y=np.min(lats), max_x=np.max(lons), max_y=np.max(lats),
+                step=step_x, step_y=step_y, step_type=step_type,
+                instance_path=instance_path, grid_type=grid_type)
+    return grid
+
+
+def grid_from_csv(grid_id: str, grid_csv_path: str, grid_type='spherical'):
+    """
+    Generate grid from txt with non-regular grid with near-constant step in degs
+
+    The example of CSV:
+
+    lat, lon, elevation, xIndex, yIndex
+    74.70350703505787, 67.88212284194556, -3.0, 0, 0
+    74.71064408081179, 67.88212237635464, -3.0, 1, 0
+    74.71778112618553, 67.88212160036981, -3.0, 2, 0
+    74.72491817098903, 67.8821205139911, -2.0, 3, 0
+
+    :param grid_id: grid id
+    :param grid_csv_path: path to file with coords
+    :return: Grid object
+    """
+
+    data = pd.read_csv(grid_csv_path, skipinitialspace=True)
+
+    lats, lons = data['lon'], data['lat']
+
+    x_lim = max(data['xIndex'])
+    y_lim = max(data['yIndex'])
+
+    step_x = abs(lons[19] - lons[20])  # TODO refactor!!!
+    step_y = abs(lats[0] - lats[1])
+
+    step_type = 'deg'
+
+    lons_mat = np.zeros((x_lim, y_lim))
+    lats_mat = np.zeros((x_lim, y_lim))
+    depth = np.zeros((x_lim, y_lim))
+
+    for i in range(x_lim):
+        for j in range(y_lim):
+            lons_mat[i, j] = float(data[(data['xIndex'] == i) & (data['yIndex'] == j)]['lat'])
+            lats_mat[i, j] = float(data[(data['xIndex'] == i) & (data['yIndex'] == j)]['lon'])
+            depth[i, j] = float(data[(data['xIndex'] == i) & (data['yIndex'] == j)]['elevation'])
+            if depth[i, j] > 0:
+                depth[i, j] = 0
+            else:
+                depth[i, j] = abs(depth[i,j])
+
+    instance_path = f'./data/bathy_{grid_id}.nc'
+    variable_to_netcdf(grid_lons=lons_mat, grid_lats=lats_mat,
+                       var_name='elevation', var=depth, target_path=instance_path)
 
     grid = Grid(grid_id, min_x=np.min(lons), min_y=np.min(lats), max_x=np.max(lons), max_y=np.max(lats),
                 step=step_x, step_y=step_y, step_type=step_type,

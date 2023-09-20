@@ -1,14 +1,14 @@
 {
-  "id": "pacific_example",
+  "id": "ob_example",
   "case_description": {
-    "area_name": "Bering Sea",
-    "coords": "[(53.0, 159), (53.0, 162.0), (54.0, 162), (54.0, 159.0)]",
+    "area_name": "Ob Bay",
+    "coords": "None",
     "grid": {
-      "step": 500,
-      "step_unit": "m",
+      "step": "None",
+      "step_unit": "deg",
       "grid_type": "spherical"
     },
-    "open_boundaries": "['N','S','W','E']"
+    "open_boundaries": "None"
   },
   "simulation": {
     "spinup_start": "2018-01-01 00:00",
@@ -22,17 +22,15 @@
     "upload_data": "True",
     "storage_path": "./storage",
     "force_overwrite": "False",
-    "bathy_source": "./data/gebco_small.nc",
-    "bdc_dataset_type": "glo_10m",
+    "bathy_source": "./data/landscape_UttDkOcJTu2qYNSF.csv",
+    "bdc_dataset_type": "None",
     "wind_dataset_type": "cfs2"
   },
   "output": {
     "variables": "['HSig','PDIR','RTP']",
     "save_output_fields": "True",
-    "save_spectres": "True",
+    "save_spectres": "False",
     "points": {
-      "P1": "(53.5, 159.8, 'First point')",
-      "P2": "(53.2, 159.9, 'Second point')"
     }
   },
   "nesting": {
